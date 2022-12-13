@@ -1,0 +1,5 @@
+com\shf\controller\UserInfoController.class
+com\shf\intercept\UserFollowIntercept.class
+com\shf\controller\HouseController.class
+com\shf\controller\UserFollowController.class
+com\shf\controller\dictController.class

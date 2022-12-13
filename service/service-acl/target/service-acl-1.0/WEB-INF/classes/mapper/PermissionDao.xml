@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shf.dao.PermissionDao">
+
+        <!-- 用于select查询公用抽取的列 -->
+        <sql id="columns">
+                select id, parent_id, name, url, code, type, sort, create_time, update_time, is_deleted
+ from acl_permission
+        </sql>
+        <sql id="findPageWhere">
+                <where>
+                        <if test="username != null and username!=''">
+                                username like "%"#{username}"%" and
+                        </if>
+<!--                        <if test="name != null and name!=''">-->
+<!--                                name like "%"#{name}"%" and-->
+<!--                        </if>-->
+                        <if test="phone != null and phone!=''">
+                                phone = #{phone} and
+                        </if>
+                        <if test="createTimeBegin != null and createTimeBegin!=''">
+                                create_time >= #{createTimeBegin} and
+                        </if>
+                        <if test="createTimeEnd != null and createTimeEnd!=''">
+                                create_time &lt;= #{createTimeEnd} and
+                        </if>
+                        is_deleted = 0
+                </where>
+        </sql>
+
+
+
+
+
+
+
+<!--        查询所有-->
+        <select id="findAll" resultType="com.shf.entity.Permission">
+                --         这里引用id要一模一样 刚才少了S
+                <include refid="columns"></include>
+
+                where is_deleted = 0
+        </select>
+<!--        &lt;!&ndash;    增加&ndash;&gt;-->
+<!--        <select id="insert">-->
+<!--                insert into acl_role (role_name,role_code,description)values (#{roleName},#{roleCode},#{description})-->
+<!--        </select>-->
+<!--        &lt;!&ndash;    逻辑删除&ndash;&gt;-->
+<!--        <update id="delete">-->
+<!--                update acl_role-->
+<!--                set is_deleted = 1-->
+<!--                where id = #{id}-->
+
+<!--        </update>-->
+<!--        &lt;!&ndash;    修改数据&ndash;&gt;-->
+<!--        <select id="getById" resultType="com.shf.entity.Role">-->
+<!--                <include refid="columns"></include>-->
+<!--                from acl_role-->
+<!--                where id = #{id}-->
+<!--        </select>-->
+<!--        &lt;!&ndash;    更新数据室&ndash;&gt;-->
+<!--        <update id="update" >-->
+<!--                update acl_role set-->
+<!--                <if test="roleName != null and roleName != ''">-->
+<!--                        role_name = #{roleName} ,-->
+<!--                </if>-->
+<!--                <if test="roleCode != null and roleCode != ''">-->
+<!--                        role_code = #{roleCode} ,-->
+<!--                </if>-->
+<!--                <if test="description != null and description != ''">-->
+<!--                        description = #{description} ,-->
+<!--                </if>-->
+<!--                update_time =  now()-->
+<!--                where-->
+<!--                id = #{id}-->
+<!--        </update>-->
+
+
+        <select id="findPage" resultType="com.shf.entity.Admin">
+                <include refid="columns" />
+                from acl_admin
+                <include refid="findPageWhere"/>
+                order by id desc
+        </select>
+        <select id="getById" resultType="admin">
+                <include refid="columns"></include>
+from acl_admin
+where id=#{id}
+        </select>
+        <update id="update">
+                update acl_admin
+                <set>
+                <if test="name !=null and name!=''">
+                        name=#{name}
+                </if>
+                        <if test="phone !=null and phone!=''">
+                                phone=#{phone}
+                        </if>
+                        <if test="headUrl !=null and headUrl!=''">
+                                head_url=#{headUrl}
+                        </if>
+                </set>
+                where id=#{id}
+        </update>
+<!--        //动态左侧权限查询-->
+        <select id="findpermissionByAdminId" resultType="Permission">
+                select
+                        distinct c.*
+                from acl_admin_role a
+                             inner join acl_role_permission b on b.role_id = a.role_id
+                             inner join acl_permission c on c.id = b.permission_id
+                where
+                        a.admin_id = #{adminId}
+                  and c.type = 1
+                  and a.is_deleted = 0
+                  and b.is_deleted = 0
+                  and c.is_deleted = 0
+        </select>
+</mapper>

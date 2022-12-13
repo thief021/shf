@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shf.dao.RolePermissionDao">
+
+        <!-- 用于select查询公用抽取的列 -->
+        <sql id="columns">
+                select id, parent_id, name, url, code, type, sort, create_time, update_time, is_deleted
+from acl_permission
+        </sql>
+        <sql id="findPageWhere">
+                <where>
+                        <if test="username != null and username!=''">
+                                username like "%"#{username}"%" and
+                        </if>
+<!--                        <if test="name != null and name!=''">-->
+<!--                                name like "%"#{name}"%" and-->
+<!--                        </if>-->
+                        <if test="phone != null and phone!=''">
+                                phone = #{phone} and
+                        </if>
+                        <if test="createTimeBegin != null and createTimeBegin!=''">
+                                create_time >= #{createTimeBegin} and
+                        </if>
+                        <if test="createTimeEnd != null and createTimeEnd!=''">
+                                create_time &lt;= #{createTimeEnd} and
+                        </if>
+                        is_deleted = 0
+                </where>
+        </sql>
+<select id="findListByroleId" resultType="Long">
+        select permission_id
+        from  acl_role_permission
+where  is_deleted=0
+</select>
+
+<update id="deleteByroleId">
+        update acl_role_permission set is_deleted=1
+where role_id=#{roleId}
+</update>
+
+<insert id="insetByroleIdandPId">
+        insert into acl_role_permission (role_id,permission_id) values(#{roleId},#{permissionId})
+</insert>
+
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shf.dao.AdminRoleDao">
+
+        <!-- 用于select查询公用抽取的列 -->
+        <sql id="columns">
+                select id, role_id, admin_id, create_time, update_time, is_deleted
+from acl_admin_role
+        </sql>
+        <sql id="findPageWhere">
+                <where>
+                        <if test="username != null and username!=''">
+                                username like "%"#{username}"%" and
+                        </if>
+<!--                        <if test="name != null and name!=''">-->
+<!--                                name like "%"#{name}"%" and-->
+<!--                        </if>-->
+                        <if test="phone != null and phone!=''">
+                                phone = #{phone} and
+                        </if>
+                        <if test="createTimeBegin != null and createTimeBegin!=''">
+                                create_time >= #{createTimeBegin} and
+                        </if>
+                        <if test="createTimeEnd != null and createTimeEnd!=''">
+                                create_time &lt;= #{createTimeEnd} and
+                        </if>
+                        is_deleted = 0
+                </where>
+        </sql>
+
+
+<select id="getAdminIdByRoleId" resultType="Long">
+        select role_id
+from acl_admin_role
+where admin_id=#{adminid}
+  and   is_deleted=0
+
+</select>
+<insert id="insertIsandRoleId">
+        insert into acl_admin_role (admin_id,role_id) values(
+                                                        #{adminid},#{roleid}
+                                                            )
+</insert>
+
+<update id="deleteByadminId">
+        update acl_admin_role set is_deleted=1
+        where admin_id=#{adminid}
+</update>
+
+
+
+
+</mapper>

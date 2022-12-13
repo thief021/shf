@@ -1,0 +1,13 @@
+com\shf\service\AdminRoleService.class
+com\shf\service\CommunityService.class
+com\shf\service\UserFollowService.class
+com\shf\service\RolaService.class
+com\shf\service\RolePermissionService.class
+com\shf\service\PermissionService.class
+com\shf\service\AdminService.class
+com\shf\service\HouseImageService.class
+com\shf\service\DictService.class
+com\shf\service\HouseBrokerService.class
+com\shf\service\HouseService.class
+com\shf\service\UserInfoService.class
+com\shf\service\HouseUserService.class

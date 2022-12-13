@@ -1,0 +1,10 @@
+com\shf\service\BaseService.class
+com\shf\dao\BaseDao.class
+com\shf\result\Result.class
+com\shf\util\CastUtil.class
+com\shf\util\QiniuUtils.class
+com\shf\controller\BaseController.class
+com\shf\result\ResultCodeEnum.class
+com\shf\util\WebUtil.class
+com\shf\util\MD5.class
+com\shf\service\BaseSeriviceImp.class
